@@ -1,75 +1,98 @@
---- netrik-0.14.1/load.c	Wed May 22 22:06:02 2002
-+++ netrik-0.14.1/load.c.new	Wed Jul  3 07:36:14 2002
-@@ -99,6 +99,7 @@
-       res->url=base_url;
- 
-    switch(res->url->proto.type) {
-+	int length; /* length of filename */
-       case PT_INTERNAL:    /* use stdin */
- 	 if(!res->url->absolute) {
- 	    fprintf(stderr, "error: can't follow relative link from stdin\n");
-@@ -122,17 +123,50 @@
+--- netrik-0.15/load.c.old	Wed Jul  3 16:49:06 2002
++++ netrik-0.15/load.c	Wed Jul  3 17:39:05 2002
+@@ -122,46 +122,56 @@
  	 break;
  
        case PT_FILE:
 +      case PT_UNKNOWN:
-+decompress_gzip:
++begin_file:      
  	 DMSG(("loading file: %s\n", res->url->path));
 -	 res->handle.stream=fopen(res->url->path, "r");
 -	 if(res->handle.stream==NULL) {    /* open failed */
 -	    fprintf(stderr, "can't open file %s\n", url);
-+	/* decompress gzipped files */
-+	 length = strlen(res->url->path);
-+	 if (length >= 3 && strncmp(res->url->path + length - 3, ".gz", 3) == 0) {
-+	    char *command = (char *)malloc(sizeof("zcat ") + length);
-+	    if (command != NULL) {
-+		stpcpy(stpcpy(command, "zcat "), res->url->path);
-+		DMSG(("command = %s\n", command)); 
-+		res->handle.stream=popen(command, "r");
-+		free(command);
-+	    	if (res->handle.stream==NULL) { /* popen filed */
-+		    fprintf(stderr, "can't open file %s\n", url);
-+		    res->type=RES_FAIL;
-+		    res->url->proto.type=PT_INTERNAL;
-+		    return res;
-+		}
-+		res->type=RES_PIPE;
-+		break;
-+	    }
-+	    fprintf(stderr, "can't open file %s - out of memory\n", url);
- 	    res->type=RES_FAIL;
+-	    res->type=RES_FAIL;
 -	    res->url->proto.type=PT_INTERNAL;    /* don't keep in history */
-+	    res->url->proto.type=PT_INTERNAL;
- 	    return res;
-+ 
-+	}
-+	 res->handle.stream=fopen(res->url->path, "r");
-+	 if(res->handle.stream==NULL) {    /* open failed */
-+	    char *tmp_file = (char *)malloc(sizeof(".gz") + length);
-+	    stpcpy(stpcpy(tmp_file, res->url->path), ".gz");
-+	    free(res->url->path);
-+	    res->url->path=tmp_file;
-+	    goto decompress_gzip;
-+/* unreached
-+ *	    fprintf(stderr, "can't open file %s\n", url);
-+ *	    
-+ *	    res->type=RES_FAIL;
-+ *	    res->url->proto.type=PT_INTERNAL; */   /* don't keep in history */
-+/*	    return res; */
- 	 }
- 	 res->type=RES_FILE;
- 	 break;
+-	    return res;
+-	 }
+-	 res->type=RES_FILE;
+-	 break;
 -
-+#if 0
-       case PT_UNKNOWN:    /* assume local file */
- 	 DMSG(("loading file: %s\n", res->url->path));
- 	 res->handle.stream=fopen(res->url->path, "r");
-@@ -161,7 +195,7 @@
- 	       return res;
- 	    }
- 	 }
+-      case PT_UNKNOWN:    /* assume local file */
+-	 DMSG(("loading file: %s\n", res->url->path));
+-	 res->handle.stream=fopen(res->url->path, "r");
+-	 if(res->handle.stream!=NULL) {    /* could open local file */
+-	    res->type=RES_FILE;
+-	    res->url->proto.type=PT_FILE;
+-	    break;
+-	 } else {    /* failed to open local file */
+-	    if(res->url->path[0]!='/') {    /* may also be incomplete HTTP URL */
+-	       char	x_url[sizeof("http://")+strlen(url)];    /* URL string with prepended protocol specification */
 -
-+#endif /* http:// must be explicit */ 
+-	       DMSG(("can't open local file\ntrying HTTP...\n"));
+-	       sprintf(x_url, "http://%s", url);
+-
+-	       free_url(res->url);
+-	       res->url=merge_urls(base_url, x_url);    /* need to parse again */
+-	       if(res->url->proto.type==PT_INTERNAL) {    /* couldn't merge URLs */
+-		  res->type=RES_FAIL;
+-		  return res;
+-	       }
+-	       /* fallthrough */
+-	    } else {    /* can't be HTTP */
+-	       fprintf(stderr, "can't open file %s\n", url);
+-	       res->type=RES_FAIL;
+-	       res->url->proto.type=PT_INTERNAL;    /* don't keep in history */
+-	       return res;
+-	    }
+-	 }
+-
++      if (strcmp(strrchr(res->url->path, '.'), ".gz") == 0) {
++	 	/* zcat */
++         char *command = (char *)malloc(strlen(res->url->path)
++          + sizeof("zcat "));
++         if (command) {
++            stpcpy(stpcpy(command, "zcat "), res->url->path);
++            res->handle.stream=popen(command, "r");
++            free(command);
++            if (res->handle.stream==NULL) {
++               res->type=RES_FAIL;
++               res->url->proto.type=PT_INTERNAL;
++               return res;
++            }
++            res->type=RES_PIPE;
++            res->url->proto.type=PT_FILE;
++            return res;
++         }
++         else {
++            res->type=RES_FAIL;
++            res->url->proto.type=PT_INTERNAL;
++            return res;
++         }
++      }			
++      else {
++         res->handle.stream=fopen(res->url->path, "r");
++         if(res->handle.stream==NULL) {    /* open failed */
++            char *new_url =
++               (char *)malloc(strlen(res->url->full_url) + sizeof(".gz"));
++            if (new_url) {
++               stpcpy(stpcpy(new_url, res->url->full_url), ".gz");
++               free(res->url);
++               res->url = merge_urls(base_url, new_url);
++               goto begin_file;
++            }
++            else {
++               res->type=RES_FAIL;
++               res->url->proto.type=PT_INTERNAL;
++               return res;
++            }
++         }  
++			else {
++            res->type=RES_FILE;
++            res->url->proto.type=PT_FILE;
++            break;
++         }
++      }   
++/* http:// must be given explicitly */
        case PT_HTTP:
  	 if(cfg.wget)
  	    init_wget(res);
