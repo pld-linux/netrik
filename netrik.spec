@@ -1,18 +1,13 @@
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	1.10.2
+Version:	1.11
 Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-# Source0-md5:	c90c7793aa7f9e0002e3b2e11d546d10
-Patch0:		%{name}-gzip_fallback.patch
-Patch1:		%{name}-curses.patch
-PAtch2:		%{name}-ac_fixes.patch
+# Source0-md5:	e0f4d63c09942863f9292fd156eadbd6
 URL:		http://netrik.sourceforge.net/
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	readline-devel
 Requires:	wget
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -26,16 +21,9 @@ Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIKA.
 
 %prep
 %setup -q
-#%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
-rm -f missing
-%{__aclocal}
-%{__autoheader}
-%{__autoconf}
-%{__automake}
+CPPFLAGS="-I/usr/include/ncurses"
 %configure
 %{__make}
 
