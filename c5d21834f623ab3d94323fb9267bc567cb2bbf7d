@@ -1,0 +1,4 @@
+- up to 0.12
+- add automake,autoconf in %build section,fix make flags
+- fix %doc section
+STBR
