@@ -1,8 +1,8 @@
-# $Revision: 1.8 $,11 $Date: 2002-05-21 23:14:13 $
+# $Revision: 1.9 $,11 $Date: 2002-05-23 19:37:03 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	0.12
+Version:	0.13
 Release:	1
 License:	GPL
 Group:		Applications/Networking
@@ -45,12 +45,11 @@ install -d $RPM_BUILD_ROOT%{_bindir}
 
 install netrik $RPM_BUILD_ROOT%{_bindir}
 
-gzip -9nf README AUTHORS ChangeLog NEWS  doc/*.txt
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz doc/*.html doc/*.gz
+%doc README AUTHORS  NEWS  doc/*.txt
 %attr(755,root,root) %{_bindir}/*
