@@ -1,4 +1,4 @@
-# $Revision: 1.19 $,11 $Date: 2003-01-26 15:51:52 $
+# $Revision: 1.20 $,11 $Date: 2003-04-08 13:28:38 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
@@ -6,7 +6,7 @@ Version:	1.2.1
 Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-gzip_fallback.patch
 Patch1:		%{name}-curses.patch
 PAtch2:		%{name}-ac_fixes.patch
