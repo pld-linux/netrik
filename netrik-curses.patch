@@ -1,0 +1,11 @@
+--- netrik-1.2.1/configure.in.orig	Tue Jan 21 09:02:04 2003
++++ netrik-1.2.1/configure.in	Tue Jan 21 09:03:13 2003
+@@ -10,7 +10,7 @@
+ 
+ AC_DEFINE(WGET_CMD,"wget -nv -O- '%s'")
+ 
+-CPPFLAGS="$CPPFLAGS -I. -I/usr/local/include -I/usr/include"
++CPPFLAGS="$CPPFLAGS -I. -I/usr/local/include -I/usr/include -I/usr/include/ncurses"
+ 
+ if test -z $CFLAGS; then
+ dnl Do NOT set CFLAGS to "-g -O2".
