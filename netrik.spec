@@ -1,14 +1,14 @@
-# $Revision: 1.17 $,11 $Date: 2002-10-09 13:14:41 $
+# $Revision: 1.18 $,11 $Date: 2003-01-21 08:32:17 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	0.15
-Release:	2
+Version:	1.2.1
+Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-gzip_fallback.patch
-Patch1:		%{name}-remove_dots.patch
+Patch1:		%{name}-curses.patch
 URL:		http://netrik.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -28,13 +28,11 @@ Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIK.
 
 %prep
 %setup -q 
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 
 %build
 rm -f missing
-%{__libtoolize}
-%{__gettextize}
 %{__aclocal}
 %{__automake}
 %{__autoheader}
@@ -42,21 +40,17 @@ rm -f missing
 
 %configure
 
-%{__make} \
-        DEBUG="%{rpmcflags}" \
-        CC=%{__cc} \
-	INCLUDES="-I/usr/include/ncurses"
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
-
-install netrik $RPM_BUILD_ROOT%{_bindir}
+make install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README AUTHORS  NEWS  doc/*.html
+%doc README AUTHORS NEWS TODO doc/*.html
 %attr(755,root,root) %{_bindir}/*
+%{_mandir}
