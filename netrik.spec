@@ -1,12 +1,14 @@
-# $Revision: 1.15 $,11 $Date: 2002-06-23 20:52:53 $
+# $Revision: 1.16 $,11 $Date: 2002-07-03 17:09:05 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
 Version:	0.15
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
+Patch0:		%{name}-gzip_fallback.patch
+Patch1:		%{name}-remove_dots.patch
 URL:		http://netrik.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -26,6 +28,8 @@ Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIK.
 
 %prep
 %setup -q 
+%patch0 -p1
+%patch1 -p1
 
 %build
 rm -f missing
@@ -54,5 +58,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README AUTHORS  NEWS  doc/*.txt
+%doc README AUTHORS  NEWS  doc/*.html
 %attr(755,root,root) %{_bindir}/*
