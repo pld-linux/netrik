@@ -1,8 +1,8 @@
-# $Revision: 1.10 $,11 $Date: 2002-05-23 22:09:14 $
+# $Revision: 1.11 $,11 $Date: 2002-06-01 13:08:23 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	0.13
+Version:	0.14
 Release:	1
 License:	GPL
 Group:		Applications/Networking
