@@ -1,4 +1,4 @@
-# $Revision: 1.18 $,11 $Date: 2003-01-21 08:32:17 $
+# $Revision: 1.19 $,11 $Date: 2003-01-26 15:51:52 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
@@ -9,12 +9,10 @@ Group:		Applications/Networking
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-gzip_fallback.patch
 Patch1:		%{name}-curses.patch
+PAtch2:		%{name}-ac_fixes.patch
 URL:		http://netrik.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gettext-devel
-BuildRequires:	libtool
-BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 Requires:	wget
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -27,24 +25,24 @@ Viewer/Browser/Explorer/Navigator/whatever.
 Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIK.
 
 %prep
-%setup -q 
+%setup -q
 #%patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 rm -f missing
 %{__aclocal}
-%{__automake}
 %{__autoheader}
 %{__autoconf}
-
+%{__automake}
 %configure
-
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -53,4 +51,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc README AUTHORS NEWS TODO doc/*.html
 %attr(755,root,root) %{_bindir}/*
-%{_mandir}
+%{_mandir}/man[15]/*
