@@ -1,8 +1,8 @@
-# $Revision: 1.6 $,11 $Date: 2002-05-05 15:41:41 $
+# $Revision: 1.7 $,11 $Date: 2002-05-20 06:23:43 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	0.11.1
+Version:	0.12
 Release:	1
 License:	GPL
 Group:		Applications/Networking
@@ -21,12 +21,23 @@ Viewer/Browser/Explorer/Navigator/whatever.
 Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIK.
 
 %prep
-%setup -q -n %{name}
+%setup -q 
 
 %build
+rm -f missing
+libtoolize --copy --force
+gettextize --copy --force
+aclocal
+automake -a -c -f
+autoheader
+autoconf
+
+%configure
+
 %{__make} \
-        DEBUG="-I/usr/include/ncurses %{rpmcflags}" \
-        CC=%{__cc}
+        DEBUG="%{rpmcflags}" \
+        CC=%{__cc} \
+	INCLUDES="-I/usr/include/ncurses"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -34,7 +45,7 @@ install -d $RPM_BUILD_ROOT%{_bindir}
 
 install netrik $RPM_BUILD_ROOT%{_bindir}
 
-gzip -9nf README CHANGES doc/*.txt
+gzip -9nf README AUTHORS ChangeLog NEWS  doc/*.txt
 
 %clean
 rm -rf $RPM_BUILD_ROOT
