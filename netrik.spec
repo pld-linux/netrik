@@ -1,4 +1,4 @@
-# $Revision: 1.19 $,11 $Date: 2003-01-26 15:51:52 $
+# $Revision: 1.19.2.1 $,11 $Date: 2003-07-11 12:02:07 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
