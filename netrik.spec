@@ -1,12 +1,12 @@
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	1.10.1
+Version:	1.10.2
 Release:	1
 License:	GPL
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-# Source0-md5:	60f078ec1d97bc232ee0a9a0af7595af
+# Source0-md5:	c90c7793aa7f9e0002e3b2e11d546d10
 Patch0:		%{name}-gzip_fallback.patch
 Patch1:		%{name}-curses.patch
 PAtch2:		%{name}-ac_fixes.patch
@@ -42,7 +42,8 @@ rm -f missing
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
