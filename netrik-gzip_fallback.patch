@@ -1,0 +1,75 @@
+--- netrik-0.14.1/load.c	Wed May 22 22:06:02 2002
++++ netrik-0.14.1/load.c.new	Wed Jul  3 07:36:14 2002
+@@ -99,6 +99,7 @@
+       res->url=base_url;
+ 
+    switch(res->url->proto.type) {
++	int length; /* length of filename */
+       case PT_INTERNAL:    /* use stdin */
+ 	 if(!res->url->absolute) {
+ 	    fprintf(stderr, "error: can't follow relative link from stdin\n");
+@@ -122,17 +123,50 @@
+ 	 break;
+ 
+       case PT_FILE:
++      case PT_UNKNOWN:
++decompress_gzip:
+ 	 DMSG(("loading file: %s\n", res->url->path));
+-	 res->handle.stream=fopen(res->url->path, "r");
+-	 if(res->handle.stream==NULL) {    /* open failed */
+-	    fprintf(stderr, "can't open file %s\n", url);
++	/* decompress gzipped files */
++	 length = strlen(res->url->path);
++	 if (length >= 3 && strncmp(res->url->path + length - 3, ".gz", 3) == 0) {
++	    char *command = (char *)malloc(sizeof("zcat ") + length);
++	    if (command != NULL) {
++		stpcpy(stpcpy(command, "zcat "), res->url->path);
++		DMSG(("command = %s\n", command)); 
++		res->handle.stream=popen(command, "r");
++		free(command);
++	    	if (res->handle.stream==NULL) { /* popen filed */
++		    fprintf(stderr, "can't open file %s\n", url);
++		    res->type=RES_FAIL;
++		    res->url->proto.type=PT_INTERNAL;
++		    return res;
++		}
++		res->type=RES_PIPE;
++		break;
++	    }
++	    fprintf(stderr, "can't open file %s - out of memory\n", url);
+ 	    res->type=RES_FAIL;
+-	    res->url->proto.type=PT_INTERNAL;    /* don't keep in history */
++	    res->url->proto.type=PT_INTERNAL;
+ 	    return res;
++ 
++	}
++	 res->handle.stream=fopen(res->url->path, "r");
++	 if(res->handle.stream==NULL) {    /* open failed */
++	    char *tmp_file = (char *)malloc(sizeof(".gz") + length);
++	    stpcpy(stpcpy(tmp_file, res->url->path), ".gz");
++	    free(res->url->path);
++	    res->url->path=tmp_file;
++	    goto decompress_gzip;
++/* unreached
++ *	    fprintf(stderr, "can't open file %s\n", url);
++ *	    
++ *	    res->type=RES_FAIL;
++ *	    res->url->proto.type=PT_INTERNAL; */   /* don't keep in history */
++/*	    return res; */
+ 	 }
+ 	 res->type=RES_FILE;
+ 	 break;
+-
++#if 0
+       case PT_UNKNOWN:    /* assume local file */
+ 	 DMSG(("loading file: %s\n", res->url->path));
+ 	 res->handle.stream=fopen(res->url->path, "r");
+@@ -161,7 +195,7 @@
+ 	       return res;
+ 	    }
+ 	 }
+-
++#endif /* http:// must be explicit */ 
+       case PT_HTTP:
+ 	 if(cfg.wget)
+ 	    init_wget(res);
