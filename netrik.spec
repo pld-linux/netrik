@@ -1,20 +1,21 @@
-# $Revision: 1.5 $,11 $Date: 2002-05-05 10:42:27 $
-Summary:        The ANTRIK Internet Viewer
-Summary(pl):    Przegl±darka internetowa ANTRIK
-Name:           netrik
-Version:        0.11.1
-Release:        1
-License:        GPL
-Group:          Applications/Networking
-Source0:        ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
-URL:            http://netrik.sourceforge.net/
-BuildRequires:  ncurses-devel
-BuildRequires:  readline-devel
-Requires:       wget
-BuildRoot:      %{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+# $Revision: 1.6 $,11 $Date: 2002-05-05 15:41:41 $
+Summary:	The ANTRIK Internet Viewer
+Summary(pl):	Przegl±darka internetowa ANTRIK
+Name:		netrik
+Version:	0.11.1
+Release:	1
+License:	GPL
+Group:		Applications/Networking
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/%{name}/%{name}-%{version}.tar.gz
+URL:		http://netrik.sourceforge.net/
+BuildRequires:	ncurses-devel
+BuildRequires:	readline-devel
+Requires:	wget
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Netrik is the ANTRIK Internet Viewer/Browser/Explorer/Navigator/whatever.
+Netrik is the ANTRIK Internet
+Viewer/Browser/Explorer/Navigator/whatever.
 
 %description -l pl
 Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIK.
