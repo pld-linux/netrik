@@ -1,4 +1,4 @@
-# $Revision: 1.7 $,11 $Date: 2002-05-20 06:23:43 $
+# $Revision: 1.8 $,11 $Date: 2002-05-21 23:14:13 $
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
@@ -28,9 +28,9 @@ rm -f missing
 libtoolize --copy --force
 gettextize --copy --force
 aclocal
-automake -a -c -f
+%{__automake}
 autoheader
-autoconf
+%{__autoconf}
 
 %configure
 
