@@ -1,12 +1,12 @@
 Summary:	The ANTRIK Internet Viewer
 Summary(pl):	Przegl±darka internetowa ANTRIK
 Name:		netrik
-Version:	1.15.4
+Version:	1.15.5
 Release:	1
 License:	GPL v2+
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/netrik/%{name}-%{version}.tar.gz
-# Source0-md5:	5ec0f6d48d44728bc7c3ba5ce087acc1
+# Source0-md5:	727e80c0a4928924d2d254b03f9d5137
 URL:		http://netrik.sourceforge.net/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
