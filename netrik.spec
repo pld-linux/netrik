@@ -7,10 +7,12 @@ License:	GPL v2+
 Group:		Applications/Networking
 Source0:	http://dl.sourceforge.net/netrik/%{name}-%{version}.tar.gz
 # Source0-md5:	727e80c0a4928924d2d254b03f9d5137
+Patch0:		%{name}-tinfo.patch
 URL:		http://netrik.sourceforge.net/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
-BuildRequires:	readline-devel
+BuildRequires:	ncurses-devel
+BuildRequires:	readline-devel >= 5.0
 Requires:	wget
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -23,6 +25,7 @@ Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIKA.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__aclocal}
