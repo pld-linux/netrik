@@ -1,0 +1,16 @@
+--- netrik-1.15.5/configure.ac.orig	2006-12-18 08:50:37.000000000 +0100
++++ netrik-1.15.5/configure.ac	2006-12-20 17:40:23.462063078 +0100
+@@ -19,11 +19,11 @@
+ 
+ dnl check for ncurses
+ AC_CHECK_LIB(ncurses,
+-	     tparm,
++	     initscr,
+ 	     [NCURSES="yes"],
+ 	     AC_MSG_ERROR([ncurses is absolutely required!]))
+ 
+-LIBS="-lncurses $LIBS"
++LIBS="-lncurses -ltinfo $LIBS"
+ 
+ dnl check for readline
+ AC_CHECK_LIB(readline,
