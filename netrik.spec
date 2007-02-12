@@ -1,5 +1,5 @@
 Summary:	The ANTRIK Internet Viewer
-Summary(pl):	Przegl±darka internetowa ANTRIK
+Summary(pl.UTF-8):   PrzeglÄ…darka internetowa ANTRIK
 Name:		netrik
 Version:	1.15.5
 Release:	1
@@ -20,8 +20,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Netrik is the ANTRIK Internet
 Viewer/Browser/Explorer/Navigator/whatever.
 
-%description -l pl
-Netrik to przegl±darka/eksplorator/nawigator/cokolwiek ANTRIKA.
+%description -l pl.UTF-8
+Netrik to przeglÄ…darka/eksplorator/nawigator/cokolwiek ANTRIKA.
 
 %prep
 %setup -q
