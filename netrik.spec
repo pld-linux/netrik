@@ -1,5 +1,5 @@
 Summary:	The ANTRIK Internet Viewer
-Summary(pl.UTF-8):   Przeglądarka internetowa ANTRIK
+Summary(pl.UTF-8):	Przeglądarka internetowa ANTRIK
 Name:		netrik
 Version:	1.15.5
 Release:	1
