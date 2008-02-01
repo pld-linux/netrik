@@ -1,5 +1,3 @@
-# TODO
-# - move this and previous beta versions on DEVEL branch?
 Summary:	The ANTRIK Internet Viewer
 Summary(pl.UTF-8):	Przeglądarka internetowa ANTRIK
 Name:		netrik
